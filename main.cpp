@@ -66,14 +66,14 @@ vector<Person> loadPersonFromPhoneBook(string fileLine, vector<Person> persons)
 
     cout << persons[peopleNumber].id << ". " << persons[peopleNumber].name;
     cout << " " << persons[peopleNumber].surname  << " " << endl;
-    cout << "nr tel: " << persons[peopleNumber].nr_tel << endl;
-    cout << "adress e-mail: " << persons[peopleNumber].email << endl;
-    cout << "adres zamieszkania: " << persons[peopleNumber].adress<< endl;
+    cout << "phone number: " << persons[peopleNumber].nr_tel << endl;
+    cout << "e-mail address: " << persons[peopleNumber].email << endl;
+    cout << "address: " << persons[peopleNumber].adress<< endl;
 
     return persons;
 }
 
-bool CheckFileStatus(fstream & file)
+bool checkFileStatus(fstream & file)
 {
     bool fileStatus = false;
     if (file.good() == true)
@@ -86,12 +86,12 @@ bool CheckFileStatus(fstream & file)
 vector<Person> loadPhoneBook()
 {
     fstream file;
-    string fileName="ksiazka_adresowa.txt", fileLine;
+    string fileName="AddressBook.txt", fileLine;
     vector<Person> persons;
     file.open(fileName, ios::in);
 
     int peopleNumbers = 0;
-    bool fileStatus = CheckFileStatus(file);
+    bool fileStatus = checkFileStatus(file);
     if (fileStatus == true)
     {
         while(getline(file, fileLine))
@@ -101,7 +101,7 @@ vector<Person> loadPhoneBook()
         }
     }
     file.close();
-    system("pause");
+//    system("pause");
     return persons;
 }
 
@@ -114,8 +114,8 @@ void savePersonDataToFile(fstream & file, Person person)
 void savePersonToFile(vector<Person> persons)
 {
     fstream file;
-    string fileName="ksiazka_adresowa.txt";
-    bool fileStatus = CheckFileStatus(file);
+    string fileName="AddressBook.txt";
+    bool fileStatus = checkFileStatus(file);
     int peopleNumber = persons.size() -1;
 
     if (fileStatus == true)
@@ -130,7 +130,7 @@ void savePersonToFile(vector<Person> persons)
 
 	file.close();
 
-    cout << "Zapisano." << endl;
+    cout << "Changes saved.." << endl;
     system("pause");
 }
 
@@ -138,8 +138,8 @@ void savePhoneBookToFile(vector<Person> persons)
 {
     fstream file;
     bool fileStatus;
-    char fileName[]="ksiazka_adresowa.txt";
-    fileStatus = CheckFileStatus(file);
+    char fileName[]="AddressBook.txt";
+    fileStatus = checkFileStatus(file);
     if (fileStatus == true)
     {
         remove(fileName);
@@ -153,36 +153,36 @@ void savePhoneBookToFile(vector<Person> persons)
 
     file.close();
 
-    cout << "Zapisano." << endl;
+    cout << "Changes saved.." << endl;
     system("pause");
 }
 
 vector<Person> addNewPerson(vector<Person> persons)
 {
     int id = 0;
-    string name, surname, adress, email, nr_tel, fileName="ksiazka_adresowa.txt";
+    string name, surname, adress, email, nr_tel, fileName="AddressBook.txt";
     int personNumber = persons.size();
 
     persons.push_back(Person());
 
-    cout << "Podaj imie: " << endl;
+    cout << "Enter the name: " << endl;
     cin.sync();
     getline(cin, name);
     persons[personNumber].name = name;
 
-    cout << "Podaj nazwisko: " << endl;
+    cout << "Enter the surname: " << endl;
     getline(cin, surname);
     persons[personNumber].surname = surname;
 
-    cout << "Podaj numer telefonu: " << endl;
+    cout << "Enter phone number: " << endl;
     getline(cin, nr_tel);
     persons[personNumber].nr_tel = nr_tel;
 
-    cout << "Podaj adres e-mail: " << endl;
+    cout << "Enter the e-mail: " << endl;
     getline(cin, email);
     persons[personNumber].email = email;
 
-    cout << "Podaj adres zamieszkania: " << endl;
+    cout << "Enter the address: " << endl;
     getline(cin, adress);
     persons[personNumber].adress = adress;
 
@@ -206,9 +206,9 @@ void displayPersonData(Person person)
     string fileLine, id, name, surname, email, nr_tel, adress;
 
     cout << person.id << ". " << person.name << " " << person.surname << " " << endl;
-    cout << "nr tel: " << person.nr_tel << endl;
-    cout << "adres e-mail: " << person.email << endl;
-    cout << "adres zamieszkania: " << person.adress << endl;
+    cout << "phone number: " << person.nr_tel << endl;
+    cout << "e-mail: " << person.email << endl;
+    cout << "address: " << person.adress << endl;
 }
 
 void displayPhoneBook(vector<Person> persons)
@@ -224,7 +224,7 @@ int findPersonIDByName(vector<Person> persons)
 {
     int idNumber =0;
     string name;
-    cout << "Podaj imie: " << endl;
+    cout << "Enter the name: " << endl;
     cin.sync();
     getline(cin, name);
 
@@ -244,7 +244,7 @@ int findPersonIDBySurname(vector<Person> persons)
 {
     int idNumber =0;
     string surname;
-    cout << "Podaj nazwisko: " << endl;
+    cout << "Enter the surname: " << endl;
     cin.sync();
     getline(cin, surname);
 
@@ -263,7 +263,7 @@ int findPersonIDBySurname(vector<Person> persons)
 string getDataFromStdin(string dataTochange)
 {
     string name;
-    cout << "Wprowadz" << dataTochange << endl;
+    cout << "Enter" << dataTochange << endl;
     cin.sync();
     getline(cin, name);
     return name;
@@ -274,7 +274,7 @@ vector<Person> editPersonData(vector<Person> persons)
     int id;
     char choice;
     string name, surname, nr_tel, email, adress;
-    cout << "Wpisz numer ID Adresata, ktorego dane chcesz zmienic:" << endl;
+    cout << "Enter the ID number of Addressee whose data you want to change:" << endl;
     cin >> id;
 
     int personSize = persons.size();
@@ -283,46 +283,46 @@ vector<Person> editPersonData(vector<Person> persons)
         if (persons[i].id == id)
         {
             system("cls");
-            cout << "1. imie" << endl;
-            cout << "2. nazwisko" << endl;
-            cout << "3. numer telefonu" << endl;
-            cout << "4. email" << endl;
-            cout << "5. adres" << endl;
-            cout << "6. powrot do menu" << endl;
+            cout << "1. name" << endl;
+            cout << "2. surname" << endl;
+            cout << "3. phone number" << endl;
+            cout << "4. e-mail" << endl;
+            cout << "5. address" << endl;
+            cout << "6. back to the menu" << endl;
             cin >> choice;
             switch(choice)
             {
             case '1':
                 {
-                    name = getDataFromStdin(" nowe imie:");
+                    name = getDataFromStdin(" new name:");
                     persons[i].name = name;
                     savePhoneBookToFile(persons);
                     break;
                 }
             case '2':
                 {
-                    surname = getDataFromStdin(" nowe nazwisko:");
+                    surname = getDataFromStdin(" new surname:");
                     persons[i].surname = surname;
                     savePhoneBookToFile(persons);
                     break;
                 }
             case '3':
                 {
-                    nr_tel = getDataFromStdin(" nowy numer telefonu:");
+                    nr_tel = getDataFromStdin(" new phone number:");
                     persons[i].nr_tel = nr_tel;
                     savePhoneBookToFile(persons);
                     break;
                 }
             case '4':
                 {
-                    email = getDataFromStdin(" nowy adres e-mail:");
+                    email = getDataFromStdin(" new e-mail:");
                     persons[i].email = email;
                     savePhoneBookToFile(persons);
                     break;
                 }
             case '5':
                 {
-                    adress = getDataFromStdin(" nowy adres zamieszkania:");
+                    adress = getDataFromStdin(" new address:");
                     persons[i].adress = adress;
                     savePhoneBookToFile(persons);
                     break;
@@ -330,13 +330,13 @@ vector<Person> editPersonData(vector<Person> persons)
             case '6':
                 exit(0);
             default:
-            cout << "Nie ma takiej opcji w menu!" << endl;
+            cout << "There is no such option!" << endl;
             Sleep(1000);
             }
             return persons;
         }
     }
-    cout << "Nie ma takiego numeru ID!" << endl;
+    cout << "There is no such ID number!" << endl;
     Sleep(1000);
     return persons;
 }
@@ -344,7 +344,7 @@ vector<Person> editPersonData(vector<Person> persons)
 vector<Person> deletePerson(vector<Person> persons)
 {
     int id;
-    cout << "Wpisz numer ID Adresata, ktorego chcesz usunac:" << endl;
+    cout << "Enter the ID number of Addressee whose data you want to delete:" << endl;
     cin >> id;
 
     int peopleNumber = persons.size();
@@ -352,9 +352,9 @@ vector<Person> deletePerson(vector<Person> persons)
     {
         if (persons[i].id ==id)
         {
-            cout << "Jestes pewien, ze chcesz usunac kontakt:" << endl;
+            cout << "Are you sure you want to delete the contact data:" << endl;
             displayPersonData(persons[i]);
-            cout << "Tak - wcisnij 't', nie - wcisnij 'n'" << endl;
+            cout << "Yes - press 'y', no - press 'n'" << endl;
             cin.sync();
             char answear = getch();
             if (answear == 't')
@@ -365,7 +365,8 @@ vector<Person> deletePerson(vector<Person> persons)
             return persons;
         }
     }
-    cout << "Nie ma takiego numeru ID!" << endl;
+    cout << "There is no such ID number!" << endl;
+    Sleep(1500);
     return persons;
 }
 
@@ -378,18 +379,22 @@ int main()
     char choice;
 
     persons = loadPhoneBook();
+    if (persons.size()!=0)
+    {
+        system("pause");
+    }
 
     while (true)
     {
         system("cls");
-        cout << "1. Zapisz nowe kontakty" << endl;
-        cout << "2. Wyszukaj po imieniu" << endl;
-        cout << "3. Wyszukaj po nazwisku" << endl;
-        cout << "4. Wyswietl wszystkie kontakty" << endl;
-        cout << "5. Usun kontakt" << endl;
-        cout << "6. Edytuj kontakt" << endl;
-        cout << "9. Zakoncz program" << endl;
-        cout << "Twoj wybor:" << endl;
+        cout << "1. Save new contacts" << endl;
+        cout << "2. Search by name" << endl;
+        cout << "3. Search by surname" << endl;
+        cout << "4. Display all contacts" << endl;
+        cout << "5. Delete contact" << endl;
+        cout << "6. Edit contact" << endl;
+        cout << "9. End the program" << endl;
+        cout << "Your choice:" << endl;
         cin >> choice;
         switch (choice)
         {
@@ -403,7 +408,7 @@ int main()
                 id = findPersonIDByName(persons);
                 if (id == 0)
                 {
-                    cout << "Nie ma osoby o takim imieniu." << endl;
+                    cout << "There is no person with that name." << endl;
                 }
                 system("pause");
                 break;
@@ -413,7 +418,7 @@ int main()
                 id = findPersonIDBySurname(persons);
                 if (id == 0)
                 {
-                    cout << "Nie ma osoby o takim nazwisku." << endl;
+                    cout << "There is no person with that surname." << endl;
                 }
                 system("pause");
                 break;
@@ -421,11 +426,14 @@ int main()
         case '4':
             if (persons.size()==0)
             {
-                cout << "Nie masz jeszcze zapisanych kontaktow!" << endl;
+                cout << "There are no saved contacts yet!" << endl;
                 Sleep(1500);
             }
-            displayPhoneBook(persons);
-            system("pause");
+            else
+            {
+                displayPhoneBook(persons);
+                system("pause");
+            }
             break;
         case '5':
             {
@@ -441,8 +449,9 @@ int main()
             exit(0);
 
         default:
-            cout << "Nie ma takiej opcji w menu!" << endl;
-            Sleep(1500);
+            cout << "There is no such option!" << endl;
+            system("pause");
+            break;
         }
     }
      return 0;
