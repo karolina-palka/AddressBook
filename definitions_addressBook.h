@@ -50,6 +50,27 @@ int setNextAddresseeIDNumber(string line)
     return addresseID;
 }
 
+int getAddresseIDNumberFromFile()
+{
+    fstream file;
+    int nextAddresseID=0;
+    string fileName="AddressBook.txt", fileLine="", lineToExtractAddresseeID="";
+    file.open(fileName, ios::in);
+
+    bool fileStatus = checkFileStatus(file);
+    cin.sync();
+    if (fileStatus == true)
+    {
+        while(getline(file, fileLine))
+        {
+            lineToExtractAddresseeID = fileLine;
+            nextAddresseID = setNextAddresseeIDNumber(lineToExtractAddresseeID);
+        }
+        file.close();
+    }
+    return nextAddresseID;
+}
+
 vector<Person> loadPhoneBook(int loggedUserID, string* lineToExtractAddresseeID)
 {
     fstream file;
@@ -170,7 +191,7 @@ vector<Person> addNewPerson(vector<Person> persons, int loggedUserID, int* addre
 {
     string name, surname, adress, email, nr_tel, fileName="AddressBook.txt";
     int personNumber = persons.size();
-    cout << "personNumber: " << personNumber << endl;
+//    cout << "personNumber: " << personNumber << endl;
 
     persons.push_back(Person());
 
@@ -348,17 +369,17 @@ vector<Person> editPersonData(vector<Person> persons, int loggedUserID)
     return persons;
 }
 
-vector<Person> deletePerson(vector<Person> persons, int loggedUserID)
+vector<Person> deletePerson(vector<Person> persons, int loggedUserID, int* id)
 {
-    int id;
+//    int id;
     cout << "Enter the ID number of Addressee whose data you want to delete:" << endl;
 
-    id = getInteger();
+    *id = getInteger();
 
     int peopleNumber = persons.size();
     for (int i=0; i<peopleNumber; i++)
     {
-        if (persons[i].id ==id)
+        if (persons[i].id ==*id)
         {
             cout << "Are you sure you want to delete the contact data:" << endl;
             displayPersonData(persons[i]);
@@ -368,7 +389,7 @@ vector<Person> deletePerson(vector<Person> persons, int loggedUserID)
             if (answear == 'y')
             {
                 persons.erase(persons.begin()+i);
-                saveDeletedPersonToFile(id);
+                saveDeletedPersonToFile(*id);
                 cout << "Deleted." << endl;
             }
             return persons;

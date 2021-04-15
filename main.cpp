@@ -87,6 +87,7 @@ int main()
             {
             case '1':
             {
+                addresseeID = getAddresseIDNumberFromFile();
                 persons = addNewPerson(persons, loggedUserID, &addresseeID);
                 break;
             }
@@ -124,7 +125,7 @@ int main()
                 break;
             case '5':
             {
-                persons = deletePerson(persons, loggedUserID);
+                persons = deletePerson(persons, loggedUserID, &addresseeID);
                 break;
             }
             case '6':
