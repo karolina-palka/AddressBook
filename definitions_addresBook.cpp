@@ -1,22 +1,20 @@
-#ifndef DEFINITIONS_ADDRESSBOOK_H_INCLUDED
-#define DEFINITIONS_ADDRESSBOOK_H_INCLUDED
-struct Person
-{
-    int id, userID;
-    string name, surname, email, adress, nr_tel;
-};
+#include <iostream>
+#include "declarations_common.h"
+#include "declarations_addressBook.h"
 
-vector<Person> loadPersonFromPhoneBook(string* fileLine, vector<Person> persons, int loggedUserID)
+using namespace std;
+
+vector<Person> loadPersonFromPhoneBook(string &fileLine, vector<Person> persons, int loggedUserID)
 {
     string id="", name="", surname="", email="", nr_tel="", adress="", stringID="", loggedUserIDstr;
     int startPosition=0, intID, userID;
     int peopleNumber = persons.size();
 
-    id = readLinePart(*fileLine, &startPosition);
+    id = readLinePart(fileLine, &startPosition);
     stringID = substractString(id, 0);
     intID = convertStringToInteger(stringID);
 
-    loggedUserIDstr = readLinePart(*fileLine, &startPosition);
+    loggedUserIDstr = readLinePart(fileLine, &startPosition);
     stringID = substractString(loggedUserIDstr, 0);
     userID = convertStringToInteger(stringID);
 
@@ -25,11 +23,11 @@ vector<Person> loadPersonFromPhoneBook(string* fileLine, vector<Person> persons,
         persons.push_back(Person());
         persons[peopleNumber].id = intID;
         persons[peopleNumber].userID = userID;
-        persons[peopleNumber].name = readLinePart(*fileLine, &startPosition);
-        persons[peopleNumber].surname = readLinePart(*fileLine, &startPosition);
-        persons[peopleNumber].nr_tel = readLinePart(*fileLine, &startPosition);
-        persons[peopleNumber].email= readLinePart(*fileLine, &startPosition);
-        persons[peopleNumber].adress = readLinePart(*fileLine, &startPosition);
+        persons[peopleNumber].name = readLinePart(fileLine, &startPosition);
+        persons[peopleNumber].surname = readLinePart(fileLine, &startPosition);
+        persons[peopleNumber].nr_tel = readLinePart(fileLine, &startPosition);
+        persons[peopleNumber].email= readLinePart(fileLine, &startPosition);
+        persons[peopleNumber].adress = readLinePart(fileLine, &startPosition);
 
         cout << persons[peopleNumber].id << ". " << persons[peopleNumber].name;
         cout << " " << persons[peopleNumber].surname  << " " << endl;
@@ -71,7 +69,7 @@ int getAddresseIDNumberFromFile()
     return nextAddresseID;
 }
 
-vector<Person> loadPhoneBook(int loggedUserID, string* lineToExtractAddresseeID)
+vector<Person> loadPhoneBook(int loggedUserID, string &lineToExtractAddresseeID)
 {
     fstream file;
     string fileName="AddressBook.txt", fileLine="";
@@ -84,8 +82,8 @@ vector<Person> loadPhoneBook(int loggedUserID, string* lineToExtractAddresseeID)
     {
         while(getline(file, fileLine))
         {
-            *lineToExtractAddresseeID = fileLine;
-            persons = loadPersonFromPhoneBook(&fileLine, persons, loggedUserID);
+            lineToExtractAddresseeID = fileLine;
+            persons = loadPersonFromPhoneBook(fileLine, persons, loggedUserID);
         }
         file.close();
     }
@@ -93,7 +91,7 @@ vector<Person> loadPhoneBook(int loggedUserID, string* lineToExtractAddresseeID)
     return persons;
 }
 
-void savePersonDataToFile(fstream & file, Person person)
+void savePersonDataToFile(fstream &file, Person person)
 {
     file << person.id << "|" << person.userID << "|" << person.name << "|" << person.surname << "|" << person.nr_tel;
     file << "|" << person.email << "|" << person.adress<< "|" << endl;
@@ -187,11 +185,10 @@ void saveDeletedPersonToFile(int addresseeID)
     system("pause");
 }
 
-vector<Person> addNewPerson(vector<Person> persons, int loggedUserID, int* addresseeID)
+vector<Person> addNewPerson(vector<Person> persons, int loggedUserID, int &addresseeID)
 {
     string name, surname, adress, email, nr_tel, fileName="AddressBook.txt";
     int personNumber = persons.size();
-//    cout << "personNumber: " << personNumber << endl;
 
     persons.push_back(Person());
 
@@ -217,15 +214,15 @@ vector<Person> addNewPerson(vector<Person> persons, int loggedUserID, int* addre
     persons[personNumber].adress = adress;
     persons[personNumber].userID = loggedUserID;
 
-    if (*addresseeID==0)
+    if (addresseeID==0)
     {
-        *addresseeID = 1;
-        persons[personNumber].id = *addresseeID;
+        addresseeID = 1;
+        persons[personNumber].id = addresseeID;
     }
     else
     {
-        persons[personNumber].id = *addresseeID;
-        *addresseeID= *addresseeID +1;
+        persons[personNumber].id = addresseeID;
+        addresseeID= addresseeID +1;
     }
     savePersonToFile(persons, fileName, loggedUserID);
 
@@ -371,7 +368,7 @@ vector<Person> editPersonData(vector<Person> persons, int loggedUserID)
 
 vector<Person> deletePerson(vector<Person> persons, int loggedUserID)
 {
-//    int id;
+    int id;
     cout << "Enter the ID number of Addressee whose data you want to delete:" << endl;
 
     id = getInteger();
@@ -399,5 +396,3 @@ vector<Person> deletePerson(vector<Person> persons, int loggedUserID)
     Sleep(1500);
     return persons;
 }
-
-#endif // DEFINITIONS_ADDRESSBOOK_H_INCLUDED

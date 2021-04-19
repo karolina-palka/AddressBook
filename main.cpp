@@ -1,16 +1,10 @@
 #include <iostream>
-#include <conio.h>
-#include <fstream>
-#include <sstream>
-#include <windows.h>
-#include <vector>
-#include <stdio.h>
+
+#include "declarations_login.h"
+#include "declarations_addressBook.h"
+#include "declarations_common.h"
 
 using namespace std;
-
-#include "definitions_common.h"
-#include "definitions_login.h"
-#include "definitions_addressBook.h"
 
 int main()
 {
@@ -51,7 +45,7 @@ int main()
                 else if (loggedUserID > 0)
                 {
                     cout << "Logged in user ID: " << loggedUserID << endl;
-                    persons = loadPhoneBook(loggedUserID, &lineToExtractAddresseeID);
+                    persons = loadPhoneBook(loggedUserID, lineToExtractAddresseeID);
                     addresseeID = setNextAddresseeIDNumber(lineToExtractAddresseeID);
                     if (persons.size()!=0)
                     {
@@ -88,7 +82,7 @@ int main()
             case '1':
             {
                 addresseeID = getAddresseIDNumberFromFile();
-                persons = addNewPerson(persons, loggedUserID, &addresseeID);
+                persons = addNewPerson(persons, loggedUserID, addresseeID);
                 break;
             }
             case '2':
@@ -125,7 +119,7 @@ int main()
                 break;
             case '5':
             {
-                persons = deletePerson(persons, loggedUserID, &addresseeID);
+                persons = deletePerson(persons, loggedUserID);
                 break;
             }
             case '6':
